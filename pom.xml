@@ -72,7 +72,7 @@
   </ciManagement>
 
   <properties>
-    <mavenVersion>3.0</mavenVersion>
+    <mavenVersion>3.8.1</mavenVersion>
     <scmpublish.content>${project.build.directory}/staging/build-helper-maven-plugin</scmpublish.content>
   </properties>
 
@@ -112,7 +112,7 @@
     <dependency>
     	<groupId>org.apache.maven.shared</groupId>
     	<artifactId>file-management</artifactId>
-    	<version>3.0.0</version>
+    	<version>3.1.0</version>
     </dependency>
     <dependency>
       <groupId>org.assertj</groupId>
@@ -214,7 +214,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore />
+                        <ignore/>
                       </action>
                     </pluginExecution>
                   </pluginExecutions>
