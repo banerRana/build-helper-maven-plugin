@@ -24,23 +24,24 @@ package org.codehaus.mojo.buildhelper;
  * SOFTWARE.
  */
 
-import org.apache.maven.artifact.versioning.ArtifactVersion;
-import org.apache.maven.execution.RuntimeInformation;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.rtinfo.RuntimeInformation;
 
 /**
  * Store the maven core version in a property <code>maven.version</code>.
  *
  * @author pgier
  * @since 1.3
+ * @deprecated Maven since version {@code 3.0.4} has such property build in:
+ *         <a href="https://issues.apache.org/jira/browse/MNG-4112">MNG-4112</a>.
+ *         So goal can be removed.
  */
-@Mojo( name = "maven-version", defaultPhase = LifecyclePhase.VALIDATE, threadSafe = true )
-public class MavenVersionMojo
-    extends AbstractDefinePropertyMojo
-{
+@Deprecated
+@Mojo(name = "maven-version", defaultPhase = LifecyclePhase.VALIDATE, threadSafe = true)
+public class MavenVersionMojo extends AbstractDefinePropertyMojo {
 
     /**
      * The RuntimeInforamtion for the current instance of Maven.
@@ -51,17 +52,13 @@ public class MavenVersionMojo
     /**
      * The name of the property in which to store the version of Maven.
      */
-    @Parameter( defaultValue = "maven.version" )
+    @Parameter(defaultValue = "maven.version")
     private String versionProperty;
 
     /**
      * Main plugin execution
      */
-    public void execute()
-    {
-        ArtifactVersion mavenVersion = runtime.getApplicationVersion();
-
-        defineProperty( versionProperty, mavenVersion.toString() );
+    public void execute() {
+        defineProperty(versionProperty, runtime.getMavenVersion());
     }
-
 }

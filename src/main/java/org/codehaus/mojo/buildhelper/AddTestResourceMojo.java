@@ -27,6 +27,7 @@ package org.codehaus.mojo.buildhelper;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 
 /**
  * Add more test resource directories to the POM.
@@ -34,22 +35,43 @@ import org.apache.maven.plugins.annotations.Mojo;
  * @author Paul Gier
  * @since 1.3
  */
-@Mojo( name = "add-test-resource", defaultPhase = LifecyclePhase.GENERATE_TEST_RESOURCES, threadSafe = true )
-public class AddTestResourceMojo
-    extends AbstractAddResourceMojo
-{
+@Mojo(name = "add-test-resource", defaultPhase = LifecyclePhase.GENERATE_TEST_RESOURCES, threadSafe = true)
+public class AddTestResourceMojo extends AbstractAddResourceMojo {
+
+    /**
+     * Skip plugin execution.
+     *
+     * @since 3.5.0
+     */
+    @Parameter(property = "buildhelper.addtestresource.skip", defaultValue = "false")
+    private boolean skipAddTestResource;
+
+    /**
+     * If a test resource directory does not exist, do not add it as a root.
+     *
+     * @since 3.5.0
+     */
+    @Parameter(property = "buildhelper.addtestresource.skipIfMissing", defaultValue = "false")
+    private boolean skipAddTestResourceIfMissing;
 
     /**
      * Add the resource to the project.
      *
      * @param resource the resource to add
      */
-    public void addResource( Resource resource )
-    {
-        getProject().addTestResource( resource );
-        if ( getLog().isDebugEnabled() )
-        {
-            getLog().debug( "Added test resource: " + resource.getDirectory() );
+    public void addResource(Resource resource) {
+        getProject().addTestResource(resource);
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Added test resource: " + resource.getDirectory());
         }
+    }
+
+    @Override
+    protected boolean isSkip() {
+        return skipAddTestResource;
+    }
+
+    protected boolean isSkipIfMissing() {
+        return skipAddTestResourceIfMissing;
     }
 }
